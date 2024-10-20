@@ -51,7 +51,6 @@ UNDERLINE_NONE = uno.getConstantByName('com.sun.star.awt.FontUnderline.NONE')
 UNDERLINE_SINGLE = uno.getConstantByName('com.sun.star.awt.FontUnderline.SINGLE')
 UNDERLINE_DOUBLE = uno.getConstantByName('com.sun.star.awt.FontUnderline.DOUBLE')
 
-
 # Text alignment choices
 TEXT_ALIGN_STANDARD = 'STANDARD'
 TEXT_ALIGN_LEFT = 'LEFT'
@@ -59,6 +58,18 @@ TEXT_ALIGN_CENTER = 'CENTER'
 TEXT_ALIGN_RIGHT = 'RIGHT'
 TEXT_ALIGN_BLOCK = 'BLOCK'
 TEXT_ALIGN_REPEAT = 'REPEAT'
+
+# Text vertical alignment choices
+TEXT_VERT_ALIGN_STANDARD = uno.getConstantByName('com.sun.star.table.CellVertJustify2.STANDARD')
+TEXT_VERT_ALIGN_TOP = uno.getConstantByName('com.sun.star.table.CellVertJustify2.TOP')
+TEXT_VERT_ALIGN_CENTER = uno.getConstantByName('com.sun.star.table.CellVertJustify2.CENTER')
+TEXT_VERT_ALIGN_BOTTOM = uno.getConstantByName('com.sun.star.table.CellVertJustify2.BOTTOM')
+TEXT_VERT_ALIGN = {
+    TEXT_VERT_ALIGN_STANDARD : 'STANDARD',
+    TEXT_VERT_ALIGN_TOP      : 'TOP',
+    TEXT_VERT_ALIGN_CENTER   : 'CENTER',
+    TEXT_VERT_ALIGN_BOTTOM   : 'BOTTOM'
+}
 
 # Axis choices
 AXIS_PRIMARY = uno.getConstantByName('com.sun.star.chart.ChartAxisAssign.PRIMARY_Y')
@@ -1022,6 +1033,23 @@ class CellRange(object):
         struct.value = value
         target.setPropertyValue('HoriJustify', struct)
     text_align = property(__get_text_align, __set_text_align)
+
+    def __get_vert_align(self):
+        """
+        Gets vertical alignment.
+
+        Returns one of TEXT_VERT_ALIGN_* constants.
+        """
+        return self._get_target().getPropertyValue('VertJustify')
+    def __set_vert_align(self, value):
+        """
+        Sets vertical alignment.
+
+        Accepts TEXT_VERT_ALIGN_* constants.
+        """
+        target = self._get_target()
+        target.setPropertyValue('VertJustify', value)
+    vert_align = property(__get_vert_align, __set_vert_align)
 
     def __get_font_size(self):
         """
